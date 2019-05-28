@@ -52,38 +52,120 @@ body {font-family: "Lato", sans-serif}
   	};
     document.getElementById(id).style.display="block";
   }*/
-  
-  function searchBookName(bookname){
-  	
-  	var bookname_value = document.getElementsByName(bookname)[0].value;
-  	var rowCount=document.getElementById('demo').rows.length;
-    var search_flag=0;   //A flag confirm whether the book is included in booklist
-  	var target = document.getElementById('demo');
-    
-  	if(rowCount>1){   //dynamic clear table
-  		document.getElementById('demo').deleteRow(-1)
-  	}
-  	for (var i=0;i<booklists.length;i++){  //search book and print
-  		if(booklists[i][1]==bookname_value){
-  			target.innerHTML += "<tr><td>"+booklists[i][0]+"</td><td>"+booklists[i][1]+"</td><td>"+booklists[i][2]+"</td><td>"+booklists[i][3]+"</td></tr>";
-  			rowCount++;
-        search_flag=1;
-  		}
-  	}
-    if(search_flag==0){
-      target.innerHTML += "<tr><td>"+"NULL"+"</td><td>"+"NULL"+"</td><td>"+"NULL"+"</td><td>"+"NULL"+"</td></tr>";
-    }
-    //console.log(bookname);
-  	document.getElementById(bookname).value="";
+  function SEARCH(){
+      var sellist_value = document.getElementById('Search_sellist').value;
+      var input_value = document.getElementById('Search_input').value;
+
+      if(sellist_value=='Book'){
+        searchBookName(input_value);
+      }
+
+      if(sellist_value=='Borrower'){
+        searchBorrower(input_value);
+      }
+
+      if(sellist_value=='Branch'){
+        searchBranch(input_value);
+      }
+
+      document.getElementById('Search_sellist').value="Book";
   }
-  function deleteBookName(bookname){
-  	var bookname_value = document.getElementsByName(bookname)[0].value;
-  	for (var i=0;i<booklists.length;i++){  //search booklist and delete the book
-  		if(booklists[i][1]==bookname_value){
-  			booklists.splice(i,1);
-  		}
-  	}
-    document.getElementById(bookname).value=""; //clear text input's value
+
+  function searchBookName(input_value){
+  	var search_flag=0;   //A flag confirm whether the book is included in booklist
+    var target1 = document.getElementById('demo');
+    var target2 = document.getElementById('demo1');
+    var target3 = document.getElementById('demo2');
+    var rowCount1=document.getElementById('demo').rows.length;
+    var rowCount2=document.getElementById('demo1').rows.length;
+    var rowCount3=document.getElementById('demo2').rows.length;
+
+    while(rowCount1-- >1){   //dynamic clear table
+      document.getElementById('demo').deleteRow(-1);
+    }
+    while(rowCount2-- >1 ){   //dynamic clear table
+      document.getElementById('demo1').deleteRow(-1);
+    }
+    while(rowCount3-- >1 ){   //dynamic clear table
+      document.getElementById('demo2').deleteRow(-1);
+    }
+  	
+    $.get("http://localhost:3000/bookinfo?title="+input_value, function(result){
+      console.log(result.result.length)
+      console.log(result.result[1].bookid);
+      for(var i=0;i<result.result.length;i++){
+          target1.innerHTML  += "<tr><td>"+result.result[i].bookid+"</td><td>"+result.result[i].title+"</td><td>";
+        rowCount1++;
+        search_flag=1;
+      }
+    });
+
+    document.getElementById('Search_input').value="";
+  }
+
+function searchBorrower(borrowername){
+    var search_flag=0;   //A flag confirm whether the book is included in booklist
+    var target1 = document.getElementById('demo');
+    var target2 = document.getElementById('demo1');
+    var target3 = document.getElementById('demo2');
+    var rowCount1=document.getElementById('demo').rows.length;
+    var rowCount2=document.getElementById('demo1').rows.length;
+    var rowCount3=document.getElementById('demo2').rows.length;
+
+    while(rowCount1-- >1){   //dynamic clear table
+      document.getElementById('demo').deleteRow(-1);
+    }
+    while(rowCount2-- >1 ){   //dynamic clear table
+      document.getElementById('demo1').deleteRow(-1);
+    }
+    while(rowCount3-- >1 ){   //dynamic clear table
+      document.getElementById('demo2').deleteRow(-1);
+    }
+
+    target2.innerHTML += "<tr><td>"+"aaa"+"</td><td>"+"aaa";
+    target2.innerHTML += "<tr><td>"+"aaa"+"</td><td>"+"aaa";
+    target2.innerHTML += "<tr><td>"+"aaa"+"</td><td>"+"aaa";
+
+
+    document.getElementById('Search_input').value="";
+  }
+
+  function searchBranch(branchname){
+    var search_flag=0;   //A flag confirm whether the book is included in booklist
+    var target1 = document.getElementById('demo');
+    var target2 = document.getElementById('demo1');
+    var target3 = document.getElementById('demo2');
+    var rowCount1=document.getElementById('demo').rows.length;
+    var rowCount2=document.getElementById('demo1').rows.length;
+    var rowCount3=document.getElementById('demo2').rows.length;
+
+    while(rowCount1-- >1){   //dynamic clear table
+      document.getElementById('demo').deleteRow(-1);
+    }
+    while(rowCount2-- >1 ){   //dynamic clear table
+      document.getElementById('demo1').deleteRow(-1);
+    }
+    while(rowCount3-- >1 ){   //dynamic clear table
+      document.getElementById('demo2').deleteRow(-1);
+    }
+
+
+    document.getElementById('Search_input').value="";
+
+  }
+
+  function deleteBookName(){
+    var title_value = document.getElementById('delete_Title').value;
+    var branch_value = document.getElementById('delete_Branch').value;
+
+    for (var i=0;i<booklists.length;i++){  //search booklist and delete the book
+      if(booklists[i][1]==title_value){
+        booklists.splice(i,1);
+      }
+    }
+
+    document.getElementById('delete_Title').value=""; 
+    document.getElementById('delete_Branch').value=""; 
   }
 </script>
 
@@ -180,16 +262,16 @@ body {font-family: "Lato", sans-serif}
     <h2 class="w3-wide">Search what you want</h2>
     <form action="/action_page.php">
         <div class="form-group">
-          <center><select class="form-control" id="sel1" name="sellist1" style="width:20%; display:inline">
+          <center><select class="form-control" id="Search_sellist" name="sellist1" style="width:20%; display:inline">
             <option>Book</option>
             <option>Borrower</option>
             <option>Branch</option>
           </select>
-          <input type="text" class="form-control" placeholder="Search" id='bookName' name="bookName" style="width:79%; display:inline"></center>
+          <input type="text" class="form-control" placeholder="Search" id='Search_input' name="bookName" style="width:79%; display:inline"></center>
         </div>
         <!--<button onclick="data()" class="btn btn-primary">Submit</button>-->
     </form>
-    	<button class="btn btn-primary" onclick="javascript:searchBookName('bookName');" style="margin-bottom: 30px" >Submit</button>
+      <button class="btn btn-primary" onclick="javascript:SEARCH();" >Submit</button>
     <br>
   <!-- 搜尋表格 需要更動的地方-->
   <!--Book-->
@@ -205,7 +287,7 @@ body {font-family: "Lato", sans-serif}
     </tr>
   </table>
   <!--Borrower-->
-  <table> 
+  <table id="demo1"> 
     <tr> 
       <th>BookID</th>
       <th>BranchID</th>
@@ -214,7 +296,7 @@ body {font-family: "Lato", sans-serif}
     </tr>
   </table>
   <!--Branch-->
-  <table> 
+  <table id="demo2"> 
     <tr> 
       <th>BookID</th>
       <th>Title</th>
@@ -225,47 +307,53 @@ body {font-family: "Lato", sans-serif}
   </table>
   </div>
 <script language="javascript">
-  function addBooktoList(bookid, title, author, publisher){
-  	var bookid_value = document.getElementsByName(bookid)[0].value;
-  	var title_value = document.getElementsByName(title)[0].value;
-  	var author_value = document.getElementsByName(author)[0].value;
-  	var publisher_value = document.getElementsByName(publisher)[0].value;
-  	var tmp=[bookid_value, title_value, author_value, publisher_value];
-  	booklists.push(tmp);
-    document.getElementById(bookid).value="";
-    document.getElementById(title).value="";
-    document.getElementById(author).value="";
-    document.getElementById(publisher).value="";
+  function addBooktoList(){
+    var bookid_value = document.getElementById('Add_BookID').value;
+    var title_value = document.getElementById('Add_Title').value;
+    var publishername_value = document.getElementById('Add_PublisherName').value;
+    var branch_value = document.getElementById('Add_Branch').value;
+
+    var tmp=[bookid_value, title_value, publishername_value, branch_value];
+    booklists.push(tmp);
+
+    document.getElementById('Add_BookID').value="";
+    document.getElementById('Add_Title').value="";
+    document.getElementById('Add_PublisherName').value="PublisherName";
+    document.getElementById('Add_Branch').value="BranchID";
   }
 </script>
 
 <script language="javascript">
-  /*var library[6];
-  library[0]=['kevin':aaa, 'alan':bbb];
-  library[1]=['helen1':abc, 'yyy1':xxx];
-  library[2]=['helen2':ccc, 'yyy2':xxx];
-  library[3]=['helen3':fff, 'yyy':xxx];
-  library[4]=['helen4':zzx, 'yyy':xxx];
-  library[5]=['helen5':agc, 'yyy':xxx];*/
+  
 function OverdueBorrowers(library_number){
     var target = document.getElementById('OverdueBorrower');
-    var taipeiLibrary=[];
-    var overdueBook=['aaa','ccc','alan','kevin'];
-    taipeiLibrary.push(overdueBook);
+
     var rowCount=document.getElementById('OverdueBorrower').rows.length;
     while(rowCount>1){   //dynamic clear table
       document.getElementById('OverdueBorrower').deleteRow(1)
     }
-    if(library_number==0){
+    if(library_number=='0'){
         target.innerHTML += "<tr><td>"+"aa"+"</td><td>"+"bb"+"</td><td>";
         target.innerHTML += "<tr><td>"+"aa"+"</td><td>"+"bb"+"</td><td>";
         rowCount+=2;
-        //for(var i=0,k=1 ; i<taipeiLibrary[library_number].length ; i+2,k+2){
-          //  target.innerHTML += "<tr><td>"+taipeiLibrary[library_number[i]]+"</td><td>"+taipeiLibrary[library_number[k]]+"</td><td>"; //overdue borrowers' data didn't build yet.
-        //}
     }
-    //target.innerHTML += "<tr><td>"+"aa"+"</td><td>"+"bb"+"</td><td>";
   }
+
+function transferBook(){
+    var title_value = document.getElementById('Transfer_Title').value;
+    var old_branch_value = document.getElementById('Transfer_old_Branch').value;
+    var new_branch_value = document.getElementById('Transfer_new_Branch').value;
+
+
+
+    console.log(title_value);
+    console.log(old_branch_value);
+    console.log(new_branch_value);
+
+    document.getElementById('Transfer_Title').value="";
+    document.getElementById('Transfer_old_Branch').value="Origin BranchID";
+    document.getElementById('Transfer_new_Branch').value="New BranchID";
+}
 </script>
 
   <!-- The Manage Section Book manage 需要修改的地方-->
@@ -274,9 +362,9 @@ function OverdueBorrowers(library_number){
         <h2 class="w3-wide w3-center">Book Manage</h2><br>
         <h3 class="w3-opacity w3-center">Adding new books:</h3>
         <div class="keyin-group">
-            <center><input type="text" class="form-control" id="BookID" placeholder="BookID" name="BookID" style="width:49.8%; display:inline" >
-            <input type="text" class="form-control" id="Title" placeholder="Title" name="Title" style="width:49.8%; display:inline">
-            <select class="form-control" id="PublisherName" name="PublisherName" style="width:49.8%; display:inline">
+            <center><input type="text" class="form-control" id="Add_BookID" placeholder="BookID" name="BookID" style="width:49.8%; display:inline" >
+            <input type="text" class="form-control" id="Add_Title" placeholder="Title" name="Title" style="width:49.8%; display:inline">
+            <select class="form-control" id="Add_PublisherName" name="PublisherName" style="width:49.8%; display:inline">
               <option>PublisherName</option>
               <option>Addison Wesley</option>
               <option>IEEE Press</option>
@@ -305,7 +393,7 @@ function OverdueBorrowers(library_number){
               <option>聯經</option>
               <option>馥林文化</option>
             </select>
-            <select class="form-control" id="Branch" name="Branch" style="width:49.8%; display:inline">
+            <select class="form-control" id="Add_Branch" name="Branch" style="width:49.8%; display:inline">
               <option>BranchID</option>
               <option>TPEL01 台北巿立圖書館總館</option>
               <option>TPEL02 台北巿立圖書館中正分館</option>
@@ -315,12 +403,11 @@ function OverdueBorrowers(library_number){
               <option>TPEL06 台北巿立圖書館內湖分館</option>
             </select>
         </div><br>
-        <center><button type="submit" class="btn btn-primary" onclick="addBooktoList('BookID','Title','Author',
-         'PublisherName','Branch','No-Of_Copies')">Submit</button></center><br>
+        <center><button type="submit" class="btn btn-primary" onclick="addBooktoList()">Submit</button></center><br>
         <h3 class="w3-opacity w3-center">Delete book:</h3>
         <div class="keyin-group">
-          <input type="text" class="form-control" id="Title" placeholder="Title" name="Title" style="width:49.8%; display:inline" >
-          <select class="form-control" id="Branch" name="Branch" style="width:49.8%; display:inline">
+          <input type="text" class="form-control" id="delete_Title" placeholder="Title" name="Title" style="width:49.8%; display:inline" >
+          <select class="form-control" id="delete_Branch" name="Branch" style="width:49.8%; display:inline">
             <option>BranchID</option>
             <option>TPEL01 台北巿立圖書館總館</option>
             <option>TPEL02 台北巿立圖書館中正分館</option>
@@ -330,13 +417,12 @@ function OverdueBorrowers(library_number){
             <option>TPEL06 台北巿立圖書館內湖分館</option>
           </select>
         </div><br>
-        <center><button type="submit" class="btn btn-primary" onclick="addBooktoList('BookID','Title','Author',
-          'PublisherName','Branch','No-Of_Copies')">Delete</button></center><br>
+        <center><button type="submit" class="btn btn-primary" onclick="deleteBookName()">Delete</button></center><br>
 
         <h3 class="w3-opacity w3-center">Transfer book:</h3>
         <div class="keyin-group">
-          <input type="text" class="form-control" id="Title" placeholder="Title" name="Title" style="width:33%; display:inline" >
-          <select class="form-control" id="old_Branch" name="old_Branch" style="width:33%; display:inline">
+          <input type="text" class="form-control" id="Transfer_Title" placeholder="Title" name="Title" style="width:33%; display:inline" >
+          <select class="form-control" id="Transfer_old_Branch" name="old_Branch" style="width:33%; display:inline">
             <option>Origin BranchID</option>
             <option>TPEL01 台北巿立圖書館總館</option>
             <option>TPEL02 台北巿立圖書館中正分館</option>
@@ -345,7 +431,7 @@ function OverdueBorrowers(library_number){
             <option>TPEL05 台北巿立圖書館文山分館</option>
             <option>TPEL06 台北巿立圖書館內湖分館</option>
           </select>
-          <select class="form-control" id="new_Branch" name="new_Branch" style="width:33%; display:inline">
+          <select class="form-control" id="Transfer_new_Branch" name="new_Branch" style="width:33%; display:inline">
             <option>New BranchID</option>
             <option>TPEL01 台北巿立圖書館總館</option>
             <option>TPEL02 台北巿立圖書館中正分館</option>
@@ -355,14 +441,13 @@ function OverdueBorrowers(library_number){
             <option>TPEL06 台北巿立圖書館內湖分館</option>
           </select>
         </div><br>
-        <center><button type="submit" class="btn btn-primary" onclick="addBooktoList('BookID','Title','Author',
-          'PublisherName','Branch','No-Of_Copies')">Transfer</button></center><br>
+        <center><button type="submit" class="btn btn-primary" onclick="transferBook()">Transfer</button></center><br>
 
         <h3 class="w3-opacity w3-center">Overdue Borrowers:</h3><br>
         <form action="/action_page.php">
           <div class="form-group">
             <label for="sel1">Please select branch:</label>
-            <center><select onchange="OverdueBorrowers(value)" class="form-control" id="sel1" name="sellist1">
+            <center><select onchange="OverdueBorrowers(value)" class="form-control" id="Overdue_sellist" name="sellist1">
               <option>Please choose the library</option>
               <option value=0>All</option>
               <option value=1>TPEL01 台北巿立圖書館總館</option>
