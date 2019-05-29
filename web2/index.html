@@ -45,6 +45,7 @@ th {
   <div class="w3-bar-block">
     <a href="#" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a> 
     <a href="#search" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Search</a> 
+    <a id="chkout_btn" style="visibility: hidden" href="#chkout_return" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Checkout / Return</a>
     <a id="add_btn" style="visibility: hidden" href="#adding new books" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Adding new books</a>
     <a id="del_btn" style="visibility: hidden"  href="#delete book" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Delete book</a> 
     <a id="trans_btn" style="visibility: hidden"  href="#transfer book" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Transfer book</a> 
@@ -104,10 +105,12 @@ th {
         {
             if(!login_bool)
             {
+              document.getElementById('chkout_return').style.visibility='visible'
               document.getElementById('adding new books').style.visibility='visible'
               document.getElementById('delete book').style.visibility='visible'
               document.getElementById('transfer book').style.visibility='visible'
               document.getElementById('overdue borrower').style.visibility='visible'
+              document.getElementById('chkout_btn').style.visibility='visible'
               document.getElementById('add_btn').style.visibility='visible'
               document.getElementById('del_btn').style.visibility='visible'
               document.getElementById('trans_btn').style.visibility='visible'
@@ -115,10 +118,12 @@ th {
               document.getElementById('login_btn').innerHTML='Manager Logout'
               login_bool =!login_bool
             }else{
+              document.getElementById('chkout_return').style.visibility='hidden'
               document.getElementById('adding new books').style.visibility='hidden'
               document.getElementById('delete book').style.visibility='hidden'
               document.getElementById('transfer book').style.visibility='hidden'
               document.getElementById('overdue borrower').style.visibility='hidden'
+              document.getElementById('chkout_btn').style.visibility='hidden'
               document.getElementById('add_btn').style.visibility='hidden'
               document.getElementById('del_btn').style.visibility='hidden'
               document.getElementById('trans_btn').style.visibility='hidden'
@@ -129,7 +134,7 @@ th {
           }
           else
           {
-            alert("登入錯誤");
+            alert("Login failed. Invalid username or password.");
           }
           document.getElementById('ticketModal').style.display='none'
         
@@ -348,7 +353,6 @@ th {
     <!--Branch-->
     <table id="demo2" style="margin-bottom:30%"> 
       <tr> 
-        <th>BookID</th>
         <th>Title</th>
         <th>No-Of_Copies</th>
         <th>DateOut</th>
@@ -407,9 +411,26 @@ function transferBook(){
 </script>
 
       <!-- The Manage Section Book manage 需要修改的地方-->
+      <div class="w3-container" id="chkout_return" style="visibility: hidden">
+      <div class="w3-container w3-content w3-padding-64" style="max-width:1000px">
+        <h1 class="w3-xxxlarge"><b>Check out / Return</b></h1>
+        <hr style="width:100px;border:5px solid #B27342" class="w3-round">
+        <div class="keyin-group">
+          <label for="sel1">Type Select:</label><br>
+          <select class="w3-input w3-border" name="sellist1" style="width: 600px">
+            <option>Check out</option>
+            <option>Return</option>
+          </select>
+          <input type="text" class="w3-input w3-border" placeholder="Search" name="bookName" style="width: 600px">
+          <input type="text" class="w3-input w3-border" placeholder="Search" name="bookName" style="width: 600px">
+        </div><br>
+        <button type="submit" class="w3-button w3-brown w3-padding-large w3-hover-brown" onclick="addBooktoList()" style="margin-bottom:30%">Submit</button><br><br>
+      </div>
+    </div>
+
       <div class="w3-container" id="adding new books" style="visibility: hidden">
       <div class="w3-container w3-content w3-padding-64" style="max-width:1000px">
-          <h1 class="w3-xxxlarge"><b>Adding new books:</b></h1>
+          <h1 class="w3-xxxlarge"><b>Adding new books</b></h1>
           <hr style="width:100px;border:5px solid #B27342" class="w3-round">
           <div class="keyin-group">
               <input type="text" class="w3-input w3-border" id="Add_BookID" placeholder="BookID" name="BookID" style="width: 600px">
@@ -459,7 +480,7 @@ function transferBook(){
 
       <div class="w3-container" id="delete book" style="visibility: hidden">
       <div class="w3-container w3-content w3-padding-64" style="max-width:1000px">
-          <h1 class="w3-xxxlarge"><b>Delete book:</b></h1>
+          <h1 class="w3-xxxlarge"><b>Delete book</b></h1>
           <hr style="width:100px;border:5px solid #B27342" class="w3-round">      
           <div class="keyin-group">
             <input type="text" class="w3-input w3-border" id="delete_Title" placeholder="Title" name="Title" style="width: 600px">
@@ -480,7 +501,7 @@ function transferBook(){
   
           <div class="w3-container" id="transfer book" style="visibility: hidden">
           <div class="w3-container w3-content w3-padding-64" style="max-width:1000px">
-          <h1 class="w3-xxxlarge"><b>Transfer book:</b></h1>
+          <h1 class="w3-xxxlarge"><b>Transfer book</b></h1>
           <hr style="width:100px;border:5px solid #B27342" class="w3-round"> 
           <div class="keyin-group">
             <input type="text" class="w3-input w3-border" id="Transfer_Title" placeholder="Title" name="Title" style="width: 600px">
@@ -510,7 +531,7 @@ function transferBook(){
 
           <div class="w3-container" id="overdue borrower" style="visibility: hidden">
           <div class="w3-container w3-content w3-padding-64" style="max-width:1000px">
-          <h1 class="w3-xxxlarge"><b>Overdue Borrowers:</b></h1>
+          <h1 class="w3-xxxlarge"><b>Overdue Borrowers</b></h1>
           <hr style="width:100px;border:5px solid #B27342" class="w3-round"> 
             <div class="keyin-group">
               <select onchange="OverdueBorrowers(value)" class="w3-input w3-border" id="Overdue_sellist" name="sellist1" style="width: 600px">
