@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -222,7 +222,7 @@ function searchBorrower(borrowername){
             }
             function login_Manager()
             {
-              if(1)// document.getElementById('userName').value === "root" && document.getElementById('userPwd').value === "123456")
+              if(1)//document.getElementById('userName').value === "root" && document.getElementById('userPwd').value === "123456")
               {
                   if(!login_bool)
                   {
@@ -239,11 +239,9 @@ function searchBorrower(borrowername){
                 }
                 else
                 {
-                  alert("登入錯誤");
+                  alert("Login failed. Invalid username or password.");
                 }
                 document.getElementById('ticketModal').style.display='none'
-              
-      
             }
             </script>
           </div>
@@ -255,6 +253,27 @@ function searchBorrower(borrowername){
 <!-- Page content -->
 <div class="w3-content" style="max-width:2000px;margin-top:46px">
 
+  <!-- Automatic Slideshow Images -->
+  <div class="mySlides w3-display-container w3-center">
+    <img src="./img/lib_img_1.jpg" style="width:100%; height: 550px;">
+    <!--<div class="w3-display-bottommiddle w3-container w3-text-white w3-padding-32 w3-hide-small">
+      <h3>Los Angeles</h3>
+      <p><b>We had the best time playing at Venice Beach!</b></p>-->   
+    </div>
+  </div>
+  <div class="mySlides w3-display-container w3-center">
+    <img src="./img/lib_img_2.jpg" style="width:100%; height: 550px;">
+    <!--<div class="w3-display-bottommiddle w3-container w3-text-white w3-padding-32 w3-hide-small">
+      <h3>Knowledge is Power</h3>
+      <p><b>The atmosphere in New York is lorem ipsum.</b></p>-->  
+    </div>
+  </div>
+  <div class="mySlides w3-display-container w3-center">
+    <img src="./img/lib_img_3.jpg" style="width:100%; height: 550px;">
+    <!--<div class="w3-display-bottommiddle w3-container w3-text-white w3-padding-32 w3-hide-small">
+      <h3>Chicago</h3>
+      <p><b>Thank you, Chicago - A night we won't forget.</b></p>-->    
+    </div>
   </div>
 
   <!-- The Search Section 需要更動的地方-->
@@ -360,6 +379,16 @@ function transferBook(){
   <div class="w3-black" id="manage" style="visibility: hidden">
     <div class="w3-container w3-content w3-padding-64" style="max-width:1000px">
         <h2 class="w3-wide w3-center">Book Manage</h2><br>
+        <h3 class="w3-opacity w3-center">Check out / Return</h3>
+        <div class="form-group">
+          <center><select class="form-control" id="chkout_return" name="sellist1" style="width:20%; display:inline">
+            <option>Check out</option>
+            <option>Return</option>
+          </select>
+          <input type="text" class="form-control" placeholder="BookID" id='Search_input' name="bookName" style="width:39%; display:inline">
+          <input type="text" class="form-control" placeholder="CardID" id='Search_input' name="bookName" style="width:39%; display:inline"></center><br>
+          <center><button type="submit" class="btn btn-primary" onclick="addBooktoList()">Submit</button></center><br>
+        </div>
         <h3 class="w3-opacity w3-center">Adding new books:</h3>
         <div class="keyin-group">
             <center><input type="text" class="form-control" id="Add_BookID" placeholder="BookID" name="BookID" style="width:49.8%; display:inline" >
@@ -464,6 +493,7 @@ function transferBook(){
           <tr> 
             <th>Title</th>
             <th>Borrower</th>
+            <th>DueDate</th>
           </tr>
         </table>
     </div>
@@ -472,10 +502,8 @@ function transferBook(){
 <!-- End Page Content -->
 </div>
 
-<!--以下忽略-->
 <script>
-// Automatic Slideshow - change image every 4 seconds
-/*
+// Automatic Slideshow - change image every 3 seconds
 var myIndex = 0;
 carousel();
 function carousel() {
@@ -487,7 +515,7 @@ function carousel() {
   myIndex++;
   if (myIndex > x.length) {myIndex = 1}    
   x[myIndex-1].style.display = "block";  
-  setTimeout(carousel, 4000);    
+  setTimeout(carousel, 3000);    
 }
 // Used to toggle the menu on small screens when clicking on the menu button
 function myFunction() {
@@ -505,7 +533,6 @@ window.onclick = function(event) {
     modal.style.display = "none";
   }
 }
-*/
 </script>
 
 </body>
