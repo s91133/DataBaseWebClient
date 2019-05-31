@@ -100,7 +100,7 @@ body {font-family: "Lato", sans-serif}
     var target2 = document.getElementById('demo1');
     var target3 = document.getElementById('demo2');
     var rowCount1=document.getElementById('demo').rows.length;
-  	
+  	deleteAllTable()
     $.get("http://localhost:3000/bookinfo?title="+input_value, function(result){
       console.log(result.result)
       for(var i=0;i<result.result.length;i++){
@@ -124,7 +124,7 @@ function searchBorrower(borrowername){
     var target2 = document.getElementById('demo1');
     var target3 = document.getElementById('demo2');
     var rowCount2=document.getElementById('demo1').rows.length;
-
+    deleteAllTable()
     $.get("http://localhost:3000/borrow?name="+borrowername, function(result){
       console.log(result.result)
       for(var i=0;i<result.result.length;i++){
@@ -148,7 +148,7 @@ function searchBorrower(borrowername){
     var target2 = document.getElementById('demo1');
     var target3 = document.getElementById('demo2');
     var rowCount3=document.getElementById('demo2').rows.length;
-
+    deleteAllTable()
     $.get("http://localhost:3000/library?branchid="+branchname, function(result){
       console.log(result.result)
       for(var i=0;i<result.result.length;i++){
