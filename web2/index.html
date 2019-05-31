@@ -15,23 +15,18 @@ body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif}
 body {font-size:16px;}
 .w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer}
 .w3-half img:hover{opacity:1}
-
 h1 {
   color: #B27342;
 }
-
 table {
   border-collapse: collapse;
   width: 100%;
 }
-
 th, td {
   text-align: left;
   padding: 8px;
 }
-
 tr:nth-child(even){background-color: #f2f2f2}
-
 th {
   background-color: #1E3231;
   color: white;
@@ -141,7 +136,6 @@ th {
           }
           document.getElementById('ticketModal').style.display='none'
         
-
       }
       </script>
     </div>
@@ -199,19 +193,15 @@ th {
   function SEARCH(){
       var sellist_value = document.getElementById('Search_sellist').value;
       var input_value = document.getElementById('Search_input').value;
-
       if(sellist_value=='Book'){
         searchBookName(input_value);
       }
-
       if(sellist_value=='Borrower'){
         searchBorrower(input_value);
       }
-
       if(sellist_value=='Branch'){
         searchBranch(input_value);
       }
-
       document.getElementById('Search_sellist').value="Book";
   }
   function searchBookName(input_value){
@@ -222,7 +212,6 @@ th {
     var rowCount1=document.getElementById('demo').rows.length;
     var rowCount2=document.getElementById('demo1').rows.length;
     var rowCount3=document.getElementById('demo2').rows.length;
-
     while(rowCount1-- >1){   //dynamic clear table
       document.getElementById('demo').deleteRow(-1);
     }
@@ -232,21 +221,22 @@ th {
     while(rowCount3-- >1 ){   //dynamic clear table
       document.getElementById('demo2').deleteRow(-1);
     }
-
-    console.log(input_value);
-    for (var i=0;i<booklists.length;i++){  //search book and print
-      if(booklists[i][1]==input_value){
-        target1.innerHTML  += "<tr><td>"+booklists[i][0]+"</td><td>"+booklists[i][1]+"</td><td>"+booklists[i][2]+"</td><td>"+booklists[i][3]+"</td></tr>";
+    
+    $.get("http://localhost:3000/bookinfo?title="+input_value, function(result){
+      console.log(result.result)
+      for(var i=0;i<result.result.length;i++){
+          if(result.result[i].duedate == null){
+              target1.innerHTML  += "<tr><td>"+result.result[i].bookid+"</td><td>"+result.result[i].title+"</td><td>"+result.result[i].publisherName+"</td><td>"+result.result[i].branchname+"</td><td>"+result.result[i].No_Of_Copies+"</td><td>"+"未借出"+"</td><td>"+"未借出";
+          }else{
+              target1.innerHTML  += "<tr><td>"+result.result[i].bookid+"</td><td>"+result.result[i].title+"</td><td>"+result.result[i].publisherName+"</td><td>"+result.result[i].branchname+"</td><td>"+result.result[i].No_Of_Copies+"</td><td>"
+              +result.result[i].dateout+"</td><td>"+result.result[i].duedate;
+          }
         rowCount1++;
         search_flag=1;
       }
-    }
-    if(search_flag==0){
-        alert("Search error");
-    }
+    });
     document.getElementById('Search_input').value="";
   }
-
   function searchBorrower(borrowername){
     var search_flag=0;   //A flag confirm whether the book is included in booklist
     var target1 = document.getElementById('demo');
@@ -255,7 +245,6 @@ th {
     var rowCount1=document.getElementById('demo').rows.length;
     var rowCount2=document.getElementById('demo1').rows.length;
     var rowCount3=document.getElementById('demo2').rows.length;
-
     while(rowCount1-- >1){   //dynamic clear table
       document.getElementById('demo').deleteRow(-1);
     }
@@ -265,15 +254,20 @@ th {
     while(rowCount3-- >1 ){   //dynamic clear table
       document.getElementById('demo2').deleteRow(-1);
     }
-
-    target2.innerHTML += "<tr><td>"+"aaa"+"</td><td>"+"aaa";
-    target2.innerHTML += "<tr><td>"+"aaa"+"</td><td>"+"aaa";
-    target2.innerHTML += "<tr><td>"+"aaa"+"</td><td>"+"aaa";
-
-
+    $.get("http://localhost:3000/borrow?name="+borrowername, function(result){
+      console.log(result.result)
+      for(var i=0;i<result.result.length;i++){
+        if(result.result[i].branchname == null){
+          target2.innerHTML  += "<tr><td>"+result.result[i].CardNo+"</td><td>"+"未借書"+"</td><td>"+"未借書"+"</td><td>"+"未借書";
+        }else{
+          target2.innerHTML  += "<tr><td>"+result.result[i].CardNo+"</td><td>"+result.result[i].branchname+"</td><td>"+result.result[i].dateout+"</td><td>"+result.result[i].dueDate;
+        }
+        rowCount2++;
+        search_flag=1;
+      }
+    });
     document.getElementById('Search_input').value="";
   }
-
   function searchBranch(branchname){
     var search_flag=0;   //A flag confirm whether the book is included in booklist
     var target1 = document.getElementById('demo');
@@ -282,7 +276,6 @@ th {
     var rowCount1=document.getElementById('demo').rows.length;
     var rowCount2=document.getElementById('demo1').rows.length;
     var rowCount3=document.getElementById('demo2').rows.length;
-
     while(rowCount1-- >1){   //dynamic clear table
       document.getElementById('demo').deleteRow(-1);
     }
@@ -292,22 +285,34 @@ th {
     while(rowCount3-- >1 ){   //dynamic clear table
       document.getElementById('demo2').deleteRow(-1);
     }
-
-
+    $.get("http://localhost:3000/library?branchid="+branchname, function(result){
+      console.log(result.result)
+      for(var i=0;i<result.result.length;i++){
+          target3.innerHTML  += "<tr><td>"+result.result[i].bookid+"</td><td>"+result.result[i].title+"<tr><td>"+"NULLLLL"+"</td><td>"+result.result[i].dateout+"</td><td>"+result.result[i].dueDate;
+        rowCount3++;
+        search_flag=1;
+      }
+    });
     document.getElementById('Search_input').value="";
-
   }
-
   function deleteBookName(){
     var title_value = document.getElementById('delete_Title').value;
     var branch_value = document.getElementById('delete_Branch').value;
-
-    for (var i=0;i<booklists.length;i++){  //search booklist and delete the book
-      if(booklists[i][1]==title_value){
-        booklists.splice(i,1);
-      }
+    if(branch_value == 'TPEL01 台北巿立圖書館總館'){
+        branch_value = 'TPEL01';
+    }else if(branch_value == 'TPEL02 台北巿立圖書館中正分館'){
+        branch_value = 'TPEL02';
+    }else if(branch_value == 'TPEL03 台北巿立圖書館中山分館'){
+        branch_value = 'TPEL03';
+    }else if(branch_value == 'TPEL04 台北巿立圖書館松山分館'){
+        branch_value = 'TPEL04';
+    }else if(branch_value == 'TPEL05 台北巿立圖書館文山分館'){
+        branch_value = 'TPEL05';
+    }else if(branch_value == 'TPEL06 台北巿立圖書館內湖分館'){
+        branch_value = 'TPEL06';
     }
-
+    $.get("http://localhost:3000/delete?bookid="+title_value+"&branchid="+branch_value, function(result){
+    });
     document.getElementById('delete_Title').value=""; 
     document.getElementById('delete_Branch').value=""; 
   }
@@ -370,10 +375,21 @@ th {
     var title_value = document.getElementById('Add_Title').value;
     var publishername_value = document.getElementById('Add_PublisherName').value;
     var branch_value = document.getElementById('Add_Branch').value;
-
-    var tmp=[bookid_value, title_value, publishername_value, branch_value];
-    booklists.push(tmp);
-
+    if(branch_value == 'TPEL01 台北巿立圖書館總館'){
+        branch_value = 'TPEL01';
+    }else if(branch_value == 'TPEL02 台北巿立圖書館中正分館'){
+        branch_value = 'TPEL02';
+    }else if(branch_value == 'TPEL03 台北巿立圖書館中山分館'){
+        branch_value = 'TPEL03';
+    }else if(branch_value == 'TPEL04 台北巿立圖書館松山分館'){
+        branch_value = 'TPEL04';
+    }else if(branch_value == 'TPEL05 台北巿立圖書館文山分館'){
+        branch_value = 'TPEL05';
+    }else if(branch_value == 'TPEL06 台北巿立圖書館內湖分館'){
+        branch_value = 'TPEL06';
+    }
+    $.get("http://localhost:3000/addbook?bookid="+bookid_value+"&title="+title_value+"&publisher="+publishername_value+"&branchid="+branch_value, function(result){
+    });
     document.getElementById('Add_BookID').value="";
     document.getElementById('Add_Title').value="";
     document.getElementById('Add_PublisherName').value="PublisherName";
@@ -382,34 +398,159 @@ th {
 </script>
 
 <script language="javascript">
-function OverdueBorrowers(library_number){
+function OverdueBorrowers(){
     var target = document.getElementById('OverdueBorrower');
-
+    var Overdue_sellist_value = document.getElementById('Overdue_sellist').value;
     var rowCount=document.getElementById('OverdueBorrower').rows.length;
-    while(rowCount>1){   //dynamic clear table
-      document.getElementById('OverdueBorrower').deleteRow(1)
+    while(rowCount-- >1){   //dynamic clear table
+      document.getElementById('OverdueBorrower').deleteRow(-1)
     }
-    if(library_number=='0'){
-        target.innerHTML += "<tr><td>"+"aa"+"</td><td>"+"bb"+"</td><td>";
-        target.innerHTML += "<tr><td>"+"aa"+"</td><td>"+"bb"+"</td><td>";
-        rowCount+=2;
+    if(Overdue_sellist_value == 'TPEL01 台北巿立圖書館總館'){
+        Overdue_sellist_value = 'TPEL01';
+        $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
+          console.log(result.result);
+          for(var i=0;i<result.result.length;i++){
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            rowCount++;
+          }
+      });
+    }else if(Overdue_sellist_value == 'TPEL02 台北巿立圖書館中正分館'){
+        Overdue_sellist_value = 'TPEL02';
+        $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
+          console.log(result.result);
+          for(var i=0;i<result.result.length;i++){
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            rowCount++;
+          }
+      });
+    }else if(Overdue_sellist_value == 'TPEL03 台北巿立圖書館中山分館'){
+        Overdue_sellist_value = 'TPEL03';
+        $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
+          console.log(result.result);
+          for(var i=0;i<result.result.length;i++){
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            rowCount++;
+          }
+      });
+    }else if(Overdue_sellist_value == 'TPEL04 台北巿立圖書館松山分館'){
+        Overdue_sellist_value = 'TPEL04';
+        $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
+          console.log(result.result);
+          for(var i=0;i<result.result.length;i++){
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            rowCount++;
+          }
+      });
+    }else if(Overdue_sellist_value == 'TPEL05 台北巿立圖書館文山分館'){
+        Overdue_sellist_value = 'TPEL05';
+        $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
+          console.log(result.result);
+          for(var i=0;i<result.result.length;i++){
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            rowCount++;
+          }
+      });
+    }else if(Overdue_sellist_value == 'TPEL06 台北巿立圖書館內湖分館'){
+        Overdue_sellist_value = 'TPEL06';
+        $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
+          console.log(result.result);
+          for(var i=0;i<result.result.length;i++){
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            rowCount++;
+          }
+      });
+    }else{
+      Overdue_sellist_value = 'TPEL01';
+        $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
+          console.log(result.result);
+          for(var i=0;i<result.result.length;i++){
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            rowCount++;
+          }
+      });
+      Overdue_sellist_value = 'TPEL02';
+        $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
+          console.log(result.result);
+          for(var i=0;i<result.result.length;i++){
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            rowCount++;
+          }
+      });
+      Overdue_sellist_value = 'TPEL03';
+        $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
+          console.log(result.result);
+          for(var i=0;i<result.result.length;i++){
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            rowCount++;
+          }
+      });
+      Overdue_sellist_value = 'TPEL04';
+        $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
+          console.log(result.result);
+          for(var i=0;i<result.result.length;i++){
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            rowCount++;
+          }
+      });
+      Overdue_sellist_value = 'TPEL05';
+        $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
+          console.log(result.result);
+          for(var i=0;i<result.result.length;i++){
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            rowCount++;
+          }
+      });
+      Overdue_sellist_value = 'TPEL06';
+        $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
+          console.log(result.result);
+          for(var i=0;i<result.result.length;i++){
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            rowCount++;
+          }
+      });
     }
   }
-
 function transferBook(){
     var title_value = document.getElementById('Transfer_Title').value;
     var old_branch_value = document.getElementById('Transfer_old_Branch').value;
     var new_branch_value = document.getElementById('Transfer_new_Branch').value;
-
-
-
-    console.log(title_value);
-    console.log(old_branch_value);
-    console.log(new_branch_value);
-
+    if(old_branch_value == 'TPEL01 台北巿立圖書館總館'){
+        old_branch_value = 'TPEL01';
+    }else if(old_branch_value == 'TPEL02 台北巿立圖書館中正分館'){
+        old_branch_value = 'TPEL02';
+    }else if(old_branch_value == 'TPEL03 台北巿立圖書館中山分館'){
+        old_branch_value = 'TPEL03';
+    }else if(old_branch_value == 'TPEL04 台北巿立圖書館松山分館'){
+        old_branch_value = 'TPEL04';
+    }else if(old_branch_value == 'TPEL05 台北巿立圖書館文山分館'){
+        old_branch_value = 'TPEL05';
+    }else if(old_branch_value == 'TPEL06 台北巿立圖書館內湖分館'){
+        old_branch_value = 'TPEL06';
+    }
+    if(new_branch_value == 'TPEL01 台北巿立圖書館總館'){
+        new_branch_value = 'TPEL01';
+    }else if(new_branch_value == 'TPEL02 台北巿立圖書館中正分館'){
+        new_branch_value = 'TPEL02';
+    }else if(new_branch_value == 'TPEL03 台北巿立圖書館中山分館'){
+        new_branch_value = 'TPEL03';
+    }else if(new_branch_value == 'TPEL04 台北巿立圖書館松山分館'){
+        new_branch_value = 'TPEL04';
+    }else if(new_branch_value == 'TPEL05 台北巿立圖書館文山分館'){
+        new_branch_value = 'TPEL05';
+    }else if(new_branch_value == 'TPEL06 台北巿立圖書館內湖分館'){
+        new_branch_value = 'TPEL06';
+    }
+    $.get("http://localhost:3000/move?bookid="+title_value+"&branchid1="+old_branch_value+"&branchid2="+new_branch_value, function(result){
+    });
     document.getElementById('Transfer_Title').value="";
     document.getElementById('Transfer_old_Branch').value="Origin BranchID";
     document.getElementById('Transfer_new_Branch').value="New BranchID";
+}
+
+function CheckoutAndReturn(){
+    var BookState_value = document.getElementById('BookState').value;
+    var CheckAndReturnBookid_value = document.getElementById('CheckAndReturnBookid').value;
+    var CheckAndReturnCardid_value = document.getElementById('CheckAndReturnCardid').value;
 }
 </script>
 
@@ -420,14 +561,14 @@ function transferBook(){
         <hr style="width:100px;border:5px solid #B27342" class="w3-round">
         <div class="keyin-group">
           <label for="sel1">Type Select:</label><br>
-          <select class="w3-input w3-border" name="sellist1" style="width: 600px">
+          <select class="w3-input w3-border" id="BookState" name="sellist1" style="width: 600px">
             <option>Check out</option>
             <option>Return</option>
           </select>
-          <input type="text" class="w3-input w3-border" placeholder="Search" name="bookName" style="width: 600px">
-          <input type="text" class="w3-input w3-border" placeholder="Search" name="bookName" style="width: 600px">
+          <input type="text" class="w3-input w3-border" id='CheckAndReturnBookid' placeholder="Search" name="bookName" style="width: 600px">
+          <input type="text" class="w3-input w3-border" id='CheckAndReturnCardid' placeholder="Search" name="bookName" style="width: 600px">
         </div><br>
-        <button type="submit" class="w3-button w3-brown w3-padding-large w3-hover-brown" onclick="addBooktoList()" style="margin-bottom:30%">Submit</button><br><br>
+        <button type="submit" class="w3-button w3-brown w3-padding-large w3-hover-brown" onclick="CheckoutAndReturn()" style="margin-bottom:30%">Submit</button><br><br>
       </div>
     </div>
 
@@ -537,15 +678,15 @@ function transferBook(){
           <h1 class="w3-xxxlarge"><b>Overdue Borrowers</b></h1>
           <hr style="width:100px;border:5px solid #B27342" class="w3-round"> 
             <div class="keyin-group">
-              <select onchange="OverdueBorrowers(value)" class="w3-input w3-border" id="Overdue_sellist" name="sellist1" style="width: 600px">
-                <option>Please choose the branch</option>
-                <option value=0>All</option>
-                <option value=1>TPEL01 台北巿立圖書館總館</option>
-                <option value=2>TPEL02 台北巿立圖書館中正分館</option>
-                <option value=3>TPEL03 台北巿立圖書館中山分館</option>
-                <option value=4>TPEL04 台北巿立圖書館松山分館</option>
-                <option value=5>TPEL05 台北巿立圖書館文山分館</option>
-                <option value=6>TPEL06 台北巿立圖書館內湖分館</option>
+              <select onchange="OverdueBorrowers()" class="w3-input w3-border" id="Overdue_sellist" name="sellist1" style="width: 600px">
+              <option>Please choose the library</option>
+              <option >All</option>
+              <option >TPEL01 台北巿立圖書館總館</option>
+              <option >TPEL02 台北巿立圖書館中正分館</option>
+              <option >TPEL03 台北巿立圖書館中山分館</option>
+              <option >TPEL04 台北巿立圖書館松山分館</option>
+              <option >TPEL05 台北巿立圖書館文山分館</option>
+              <option >TPEL06 台北巿立圖書館內湖分館</option>
               </select>
             </div><br>
           <table id="OverdueBorrower" style="width: 600px; margin-bottom:60%"> 
@@ -571,7 +712,6 @@ function w3_close() {
   document.getElementById("mySidebar").style.display = "none";
   document.getElementById("myOverlay").style.display = "none";
 }
-
 // Modal Image Gallery
 function onClick(element) {
   document.getElementById("img01").src = element.src;
