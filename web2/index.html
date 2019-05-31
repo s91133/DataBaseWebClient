@@ -282,7 +282,11 @@ th {
     $.get("http://localhost:3000/library?branchid="+branchname, function(result){
       console.log(result.result)
       for(var i=0;i<result.result.length;i++){
-          target3.innerHTML  += "<tr><td>"+result.result[i].bookid+"</td><td>"+result.result[i].title+"<tr><td>"+"NULLLLL"+"</td><td>"+result.result[i].dateout.substr(0,10)+"</td><td>"+result.result[i].dueDate.substr(0,10);
+        if(result.result[i].dueDate == null){
+          target3.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].No_Of_Copies+"</td><td>"+"未借出"+"</td><td>"+"未借出";
+        }else{
+          target3.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].No_Of_Copies+"</td><td>"+result.result[i].dateout.substr(0,10)+"</td><td>"+result.result[i].dueDate.substr(0,10);
+        }
         rowCount3++;
         search_flag=1;
       }
@@ -313,7 +317,7 @@ th {
 </script>
   <!-- The Search Section 需要更動的地方-->
   <div class="w3-container" style="margin-top:80px" id="search">
-      <div class="w3-container w3-content w3-padding-64" style="max-width:1000px">
+      <div class="w3-container w3-content w3-padding-64" style="max-width:1200px">
       <h1 class="w3-xxxlarge"><b>Search</b></h1>
       <hr style="width:100px;border:5px solid #B27342" class="w3-round">
       <form action="/action_page.php">
@@ -544,14 +548,31 @@ function transferBook(){
 
 function CheckoutAndReturn(){
     var BookState_value = document.getElementById('BookState').value;
+    var BranchID_value = document.getElementById('BranchID').value;
     var CheckAndReturnBookid_value = document.getElementById('CheckAndReturnBookid').value;
     var CheckAndReturnCardid_value = document.getElementById('CheckAndReturnCardid').value;
-
-    if(BookState_value=='Check out'){
-        console.log("x");
-    }else {
-      console.log("x");
+    if(BranchID_value == 'TPEL01 台北巿立圖書館總館'){
+        BranchID_value = 'TPEL01';
+    }else if(BranchID_value == 'TPEL02 台北巿立圖書館中正分館'){
+        BranchID_value = 'TPEL02';
+    }else if(BranchID_value == 'TPEL03 台北巿立圖書館中山分館'){
+        BranchID_value = 'TPEL03';
+    }else if(BranchID_value == 'TPEL04 台北巿立圖書館松山分館'){
+        BranchID_value = 'TPEL04';
+    }else if(BranchID_value == 'TPEL05 台北巿立圖書館文山分館'){
+        BranchID_value = 'TPEL05';
+    }else if(new_branch_value == 'TPEL06 台北巿立圖書館內湖分館'){
+        BranchID_value = 'TPEL06';
     }
+    if(BookState_value=='Check out'){
+      $.get("http://localhost:3000/borrowbook?bookid="+CheckAndReturnBookid_value+"&cardno="+CheckAndReturnCardid_value+"&branchid="+BranchID_value, function(result){
+      });
+    }else if(BookState_value = 'Return'){
+      $.get("http://localhost:3000/returnbook?bookid="+CheckAndReturnBookid_value+"&cardno="+CheckAndReturnCardid_value+"&branchid="+BranchID_value, function(result){
+      });
+    }
+    document.getElementById('CheckAndReturnBookid').value="";
+    document.getElementById('CheckAndReturnCardid').value="";
 }
 </script>
 
@@ -565,6 +586,15 @@ function CheckoutAndReturn(){
           <select class="w3-input w3-border" id="BookState" name="sellist1" style="width: 600px">
             <option>Check out</option>
             <option>Return</option>
+          </select>
+          <select class="form-control" id="BranchID" name="Branch" style="width:600px;">
+            <option>BranchID</option>
+            <option>TPEL01 台北巿立圖書館總館</option>
+            <option>TPEL02 台北巿立圖書館中正分館</option>
+            <option>TPEL03 台北巿立圖書館中山分館</option>
+            <option>TPEL04 台北巿立圖書館松山分館</option>
+            <option>TPEL05 台北巿立圖書館文山分館</option>
+            <option>TPEL06 台北巿立圖書館內湖分館</option>
           </select>
           <input type="text" class="w3-input w3-border" id='CheckAndReturnBookid' placeholder="Search" name="bookName" style="width: 600px">
           <input type="text" class="w3-input w3-border" id='CheckAndReturnCardid' placeholder="Search" name="bookName" style="width: 600px">
