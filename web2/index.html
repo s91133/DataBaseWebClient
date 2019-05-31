@@ -166,11 +166,11 @@ th {
   <!-- Photo grid (modal) -->
   <div class="w3-row-padding">
     <div class="w3-half">
-      <img src="./img/lib_pic_1.jpg" style="width:100%" onclick="onClick(this)" alt="好蚌蚌">
+      <img src="./img/lib_pic_1.jpg" style="width:100%">
     </div>
 
     <div class="w3-half">
-      <img src="./img/lib_pic_2.jpg" style="width:100%" onclick="onClick(this)" alt="北投分館">
+      <img src="./img/lib_pic_2.jpg" style="width:100%">
     </div>
   </div>
 
@@ -193,22 +193,29 @@ th {
   function SEARCH(){
       var sellist_value = document.getElementById('Search_sellist').value;
       var input_value = document.getElementById('Search_input').value;
+      hideAllTable();
       if(sellist_value=='Book'){
+        document.getElementById('demo').style.display = 'table';
         searchBookName(input_value);
       }
       if(sellist_value=='Borrower'){
+        document.getElementById('demo1').style.display = 'table';
         searchBorrower(input_value);
       }
       if(sellist_value=='Branch'){
+        document.getElementById('demo2').style.display = 'table';
         searchBranch(input_value);
       }
       document.getElementById('Search_sellist').value="Book";
   }
-  function searchBookName(input_value){
-    var search_flag=0;   //A flag confirm whether the book is included in booklist
-    var target1 = document.getElementById('demo');
-    var target2 = document.getElementById('demo1');
-    var target3 = document.getElementById('demo2');
+  function hideAllTable()
+  {
+    document.getElementById('demo').style.display = 'none';
+    document.getElementById('demo1').style.display = 'none';
+    document.getElementById('demo2').style.display = 'none';    
+  }
+  function deleteAllTable()
+  {
     var rowCount1=document.getElementById('demo').rows.length;
     var rowCount2=document.getElementById('demo1').rows.length;
     var rowCount3=document.getElementById('demo2').rows.length;
@@ -221,7 +228,14 @@ th {
     while(rowCount3-- >1 ){   //dynamic clear table
       document.getElementById('demo2').deleteRow(-1);
     }
-    
+  }
+  function searchBookName(input_value){
+    var search_flag=0;   //A flag confirm whether the book is included in booklist
+    var target1 = document.getElementById('demo');
+    var target2 = document.getElementById('demo1');
+    var target3 = document.getElementById('demo2');
+    var rowCount1=document.getElementById('demo').rows.length;
+    deleteAllTable()
     $.get("http://localhost:3000/bookinfo?title="+input_value, function(result){
       console.log(result.result)
       for(var i=0;i<result.result.length;i++){
@@ -241,19 +255,9 @@ th {
     var search_flag=0;   //A flag confirm whether the book is included in booklist
     var target1 = document.getElementById('demo');
     var target2 = document.getElementById('demo1');
-    var target3 = document.getElementById('demo2');
-    var rowCount1=document.getElementById('demo').rows.length;
+    var target3 = document.getElementById('demo2');  
     var rowCount2=document.getElementById('demo1').rows.length;
-    var rowCount3=document.getElementById('demo2').rows.length;
-    while(rowCount1-- >1){   //dynamic clear table
-      document.getElementById('demo').deleteRow(-1);
-    }
-    while(rowCount2-- >1 ){   //dynamic clear table
-      document.getElementById('demo1').deleteRow(-1);
-    }
-    while(rowCount3-- >1 ){   //dynamic clear table
-      document.getElementById('demo2').deleteRow(-1);
-    }
+    deleteAllTable()
     $.get("http://localhost:3000/borrow?name="+borrowername, function(result){
       console.log(result.result)
       for(var i=0;i<result.result.length;i++){
@@ -273,18 +277,8 @@ th {
     var target1 = document.getElementById('demo');
     var target2 = document.getElementById('demo1');
     var target3 = document.getElementById('demo2');
-    var rowCount1=document.getElementById('demo').rows.length;
-    var rowCount2=document.getElementById('demo1').rows.length;
     var rowCount3=document.getElementById('demo2').rows.length;
-    while(rowCount1-- >1){   //dynamic clear table
-      document.getElementById('demo').deleteRow(-1);
-    }
-    while(rowCount2-- >1 ){   //dynamic clear table
-      document.getElementById('demo1').deleteRow(-1);
-    }
-    while(rowCount3-- >1 ){   //dynamic clear table
-      document.getElementById('demo2').deleteRow(-1);
-    }
+    deleteAllTable()
     $.get("http://localhost:3000/library?branchid="+branchname, function(result){
       console.log(result.result)
       for(var i=0;i<result.result.length;i++){
@@ -338,7 +332,7 @@ th {
       <br>
     <!-- 搜尋表格 需要更動的地方-->
     <!--Book-->
-    <table id="demo"> 
+    <table id="demo" style="display:none;margin-top: 40px">
       <tr> 
         <th>BookID</th>
         <th>Title</th>
@@ -350,7 +344,7 @@ th {
       </tr>
     </table>
     <!--Borrower-->
-    <table id="demo1"> 
+    <table id="demo1" style="display:none;margin-top: 40px"> 
       <tr> 
         <th>BookID</th>
         <th>BranchID</th>
@@ -359,7 +353,7 @@ th {
       </tr>
     </table>
     <!--Branch-->
-    <table id="demo2" style="margin-bottom:30%"> 
+    <table id="demo2" style="margin-bottom:30%;display:none;margin-top: 40px"> 
       <tr> 
         <th>Title</th>
         <th>No-Of_Copies</th>
@@ -399,6 +393,7 @@ th {
 
 <script language="javascript">
 function OverdueBorrowers(){
+  document.getElementById('OverdueBorrower').style.visibility='visible';
     var target = document.getElementById('OverdueBorrower');
     var Overdue_sellist_value = document.getElementById('Overdue_sellist').value;
     var rowCount=document.getElementById('OverdueBorrower').rows.length;
@@ -561,7 +556,7 @@ function CheckoutAndReturn(){
 </script>
 
       <!-- The Manage Section Book manage 需要修改的地方-->
-      <div class="w3-container" id="chkout_return" style="visibility: hidden">
+      <div class="w3-container" id="chkout_return" style="visibility: hidden;margin-top: 100%">
       <div class="w3-container w3-content w3-padding-64" style="max-width:1000px">
         <h1 class="w3-xxxlarge"><b>Check out / Return</b></h1>
         <hr style="width:100px;border:5px solid #B27342" class="w3-round">
@@ -578,7 +573,7 @@ function CheckoutAndReturn(){
       </div>
     </div>
 
-      <div class="w3-container" id="adding new books" style="visibility: hidden">
+      <div class="w3-container" id="adding new books" style="visibility: hidden;hidden;margin-top: 100%">
       <div class="w3-container w3-content w3-padding-64" style="max-width:1000px">
           <h1 class="w3-xxxlarge"><b>Adding new books</b></h1>
           <hr style="width:100px;border:5px solid #B27342" class="w3-round">
@@ -628,7 +623,7 @@ function CheckoutAndReturn(){
               </div>
             </div>
 
-      <div class="w3-container" id="delete book" style="visibility: hidden">
+      <div class="w3-container" id="delete book" style="visibility: hidden;margin-top: 100%">
       <div class="w3-container w3-content w3-padding-64" style="max-width:1000px">
           <h1 class="w3-xxxlarge"><b>Delete book</b></h1>
           <hr style="width:100px;border:5px solid #B27342" class="w3-round">      
@@ -649,7 +644,7 @@ function CheckoutAndReturn(){
           </div>
           </div>
   
-          <div class="w3-container" id="transfer book" style="visibility: hidden">
+          <div class="w3-container" id="transfer book" style="visibility: hidden;margin-top: 100%">
           <div class="w3-container w3-content w3-padding-64" style="max-width:1000px">
           <h1 class="w3-xxxlarge"><b>Transfer book</b></h1>
           <hr style="width:100px;border:5px solid #B27342" class="w3-round"> 
@@ -679,12 +674,12 @@ function CheckoutAndReturn(){
           </div>
           </div>
 
-          <div class="w3-container" id="overdue borrower" style="visibility: hidden">
+          <div class="w3-container" id="overdue borrower" style="margin-top: 100%">
           <div class="w3-container w3-content w3-padding-64" style="max-width:1000px">
           <h1 class="w3-xxxlarge"><b>Overdue Borrowers</b></h1>
           <hr style="width:100px;border:5px solid #B27342" class="w3-round"> 
             <div class="keyin-group">
-              <select onchange="OverdueBorrowers()" class="w3-input w3-border" id="Overdue_sellist" name="sellist1" style="width: 800px">
+              <select onchange="OverdueBorrowers()" class="w3-input w3-border" id="Overdue_sellist" name="sellist1" style="width: 1000px;">
               <option>Please choose the library</option>
               <option >All</option>
               <option >TPEL01 台北巿立圖書館總館</option>
@@ -695,7 +690,7 @@ function CheckoutAndReturn(){
               <option >TPEL06 台北巿立圖書館內湖分館</option>
               </select>
             </div><br>
-          <table id="OverdueBorrower" style="width: 800px; margin-bottom:60%"> 
+          <table id="OverdueBorrower" style="width: 1000px; margin-bottom:60%;visibility: hidden;"> 
             <tr> 
               <th>Title</th>
               <th>Borrower</th>
