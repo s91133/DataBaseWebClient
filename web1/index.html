@@ -97,7 +97,7 @@ body {font-family: "Lato", sans-serif}
               target1.innerHTML  += "<tr><td>"+result.result[i].bookid+"</td><td>"+result.result[i].title+"</td><td>"+result.result[i].publisherName+"</td><td>"+result.result[i].branchname+"</td><td>"+result.result[i].No_Of_Copies+"</td><td>"+"未借出"+"</td><td>"+"未借出";
           }else{
               target1.innerHTML  += "<tr><td>"+result.result[i].bookid+"</td><td>"+result.result[i].title+"</td><td>"+result.result[i].publisherName+"</td><td>"+result.result[i].branchname+"</td><td>"+result.result[i].No_Of_Copies+"</td><td>"
-              +result.result[i].dateout+"</td><td>"+result.result[i].duedate;
+              +result.result[i].dateout.substr(0,10)+"</td><td>"+result.result[i].duedate.substr(0,10);
           }
         rowCount1++;
         search_flag=1;
@@ -132,7 +132,7 @@ function searchBorrower(borrowername){
         if(result.result[i].branchname == null){
           target2.innerHTML  += "<tr><td>"+result.result[i].CardNo+"</td><td>"+"未借書"+"</td><td>"+"未借書"+"</td><td>"+"未借書";
         }else{
-          target2.innerHTML  += "<tr><td>"+result.result[i].CardNo+"</td><td>"+result.result[i].branchname+"</td><td>"+result.result[i].dateout+"</td><td>"+result.result[i].dueDate;
+          target2.innerHTML  += "<tr><td>"+result.result[i].CardNo+"</td><td>"+result.result[i].branchname+"</td><td>"+result.result[i].dateout.substr(0,10)+"</td><td>"+result.result[i].dueDate.substr(0,10);
         }
         rowCount2++;
         search_flag=1;
@@ -165,7 +165,11 @@ function searchBorrower(borrowername){
     $.get("http://localhost:3000/library?branchid="+branchname, function(result){
       console.log(result.result)
       for(var i=0;i<result.result.length;i++){
-          target3.innerHTML  += "<tr><td>"+result.result[i].bookid+"</td><td>"+result.result[i].title+"<tr><td>"+"NULLLLL"+"</td><td>"+result.result[i].dateout+"</td><td>"+result.result[i].dueDate;
+        if(result.result[i].dueDate == null){
+          target3.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].No_Of_Copies+"</td><td>"+"未借出"+"</td><td>"+"未借出";
+        }else{
+          target3.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].No_Of_Copies+"</td><td>"+result.result[i].dateout.substr(0,10)+"</td><td>"+result.result[i].dueDate.substr(0,10);
+        }
         rowCount3++;
         search_flag=1;
       }
@@ -310,7 +314,7 @@ function searchBorrower(borrowername){
   </div>
 
   <!-- The Search Section 需要更動的地方-->
-  <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:1000px" id="search">
+  <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:1500px" id="search">
     <h2 class="w3-wide">Search what you want</h2>
     <form action="/action_page.php">
         <div class="form-group">
@@ -403,7 +407,7 @@ function OverdueBorrowers(){
         $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
           console.log(result.result);
           for(var i=0;i<result.result.length;i++){
-            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate.substr(0,10);
             rowCount++;
           }
       });
@@ -412,7 +416,7 @@ function OverdueBorrowers(){
         $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
           console.log(result.result);
           for(var i=0;i<result.result.length;i++){
-            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate.substr(0,10);
             rowCount++;
           }
       });
@@ -421,7 +425,7 @@ function OverdueBorrowers(){
         $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
           console.log(result.result);
           for(var i=0;i<result.result.length;i++){
-            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate.substr(0,10);
             rowCount++;
           }
       });
@@ -430,7 +434,7 @@ function OverdueBorrowers(){
         $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
           console.log(result.result);
           for(var i=0;i<result.result.length;i++){
-            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate.substr(0,10);
             rowCount++;
           }
       });
@@ -439,7 +443,7 @@ function OverdueBorrowers(){
         $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
           console.log(result.result);
           for(var i=0;i<result.result.length;i++){
-            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate.substr(0,10);
             rowCount++;
           }
       });
@@ -448,7 +452,7 @@ function OverdueBorrowers(){
         $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
           console.log(result.result);
           for(var i=0;i<result.result.length;i++){
-            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate.substr(0,10);
             rowCount++;
           }
       });
@@ -457,7 +461,7 @@ function OverdueBorrowers(){
         $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
           console.log(result.result);
           for(var i=0;i<result.result.length;i++){
-            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate.substr(0,10);
             rowCount++;
           }
       });
@@ -465,7 +469,7 @@ function OverdueBorrowers(){
         $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
           console.log(result.result);
           for(var i=0;i<result.result.length;i++){
-            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate.substr(0,10);
             rowCount++;
           }
       });
@@ -473,7 +477,7 @@ function OverdueBorrowers(){
         $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
           console.log(result.result);
           for(var i=0;i<result.result.length;i++){
-            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate.substr(0,10);
             rowCount++;
           }
       });
@@ -481,7 +485,7 @@ function OverdueBorrowers(){
         $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
           console.log(result.result);
           for(var i=0;i<result.result.length;i++){
-            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate.substr(0,10);
             rowCount++;
           }
       });
@@ -489,7 +493,7 @@ function OverdueBorrowers(){
         $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
           console.log(result.result);
           for(var i=0;i<result.result.length;i++){
-            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate.substr(0,10);
             rowCount++;
           }
       });
@@ -497,7 +501,7 @@ function OverdueBorrowers(){
         $.get("http://localhost:3000/overtimebranch?branchid="+Overdue_sellist_value, function(result){
           console.log(result.result);
           for(var i=0;i<result.result.length;i++){
-            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate;
+            target.innerHTML  += "<tr><td>"+result.result[i].title+"</td><td>"+result.result[i].name+"</td><td>"+result.result[i].dueDate.substr(0,10);
             rowCount++;
           }
       });
@@ -550,10 +554,35 @@ function transferBook(){
 
 function CheckoutAndReturn(){
     var BookState_value = document.getElementById('BookState').value;
+    var BranchID_value = document.getElementById('BranchID').value;
     var CheckAndReturnBookid_value = document.getElementById('CheckAndReturnBookid').value;
     var CheckAndReturnCardid_value = document.getElementById('CheckAndReturnCardid').value;
 
+    if(BranchID_value == 'TPEL01 台北巿立圖書館總館'){
+        BranchID_value = 'TPEL01';
+    }else if(BranchID_value == 'TPEL02 台北巿立圖書館中正分館'){
+        BranchID_value = 'TPEL02';
+    }else if(BranchID_value == 'TPEL03 台北巿立圖書館中山分館'){
+        BranchID_value = 'TPEL03';
+    }else if(BranchID_value == 'TPEL04 台北巿立圖書館松山分館'){
+        BranchID_value = 'TPEL04';
+    }else if(BranchID_value == 'TPEL05 台北巿立圖書館文山分館'){
+        BranchID_value = 'TPEL05';
+    }else if(new_branch_value == 'TPEL06 台北巿立圖書館內湖分館'){
+        BranchID_value = 'TPEL06';
+    }
 
+    if(BookState_value=='Check out'){
+      $.get("http://localhost:3000/borrowbook?bookid="+CheckAndReturnBookid_value+"&cardno="+CheckAndReturnCardid_value+"&branchid="+BranchID_value, function(result){
+
+      });
+    }else if(BookState_value = 'Return'){
+      $.get("http://localhost:3000/returnbook?bookid="+CheckAndReturnBookid_value+"&cardno="+CheckAndReturnCardid_value+"&branchid="+BranchID_value, function(result){
+
+      });
+    }
+    document.getElementById('CheckAndReturnBookid').value="";
+    document.getElementById('CheckAndReturnCardid').value="";
 }
 </script>
 
@@ -563,12 +592,21 @@ function CheckoutAndReturn(){
         <h2 class="w3-wide w3-center">Book Manage</h2><br>
         <h3 class="w3-opacity w3-center">Check out / Return</h3>
         <div class="form-group">
-          <center><select class="form-control" id="BookState" name="sellist1" style="width:20%; display:inline">
+          <center><select class="form-control" id="BookState" name="sellist1" style="width:15%; display:inline">
             <option>Check out</option>
             <option>Return</option>
           </select>
-          <input type="text" class="form-control" placeholder="BookID" id='CheckAndReturnBookid' name="bookName" style="width:39%; display:inline">
-          <input type="text" class="form-control" placeholder="CardID" id='CheckAndReturnCardid' name="bookName" style="width:39%; display:inline"></center><br>
+          <select class="form-control" id="BranchID" name="Branch" style="width:34%; display:inline">
+            <option>BranchID</option>
+            <option>TPEL01 台北巿立圖書館總館</option>
+            <option>TPEL02 台北巿立圖書館中正分館</option>
+            <option>TPEL03 台北巿立圖書館中山分館</option>
+            <option>TPEL04 台北巿立圖書館松山分館</option>
+            <option>TPEL05 台北巿立圖書館文山分館</option>
+            <option>TPEL06 台北巿立圖書館內湖分館</option>
+          </select>
+          <input type="text" class="form-control" placeholder="BookID" id='CheckAndReturnBookid' name="bookName" style="width:25%; display:inline">
+          <input type="text" class="form-control" placeholder="CardID" id='CheckAndReturnCardid' name="bookName" style="width:25%; display:inline"></center><br>
           <center><button type="submit" class="btn btn-primary" onclick="CheckoutAndReturn()">Submit</button></center><br>
         </div>
         <h3 class="w3-opacity w3-center">Adding new books:</h3>
