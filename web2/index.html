@@ -262,9 +262,9 @@ th {
       console.log(result.result)
       for(var i=0;i<result.result.length;i++){
         if(result.result[i].branchname == null){
-          target2.innerHTML  += "<tr><td>"+result.result[i].CardNo+"</td><td>"+"未借書"+"</td><td>"+"未借書"+"</td><td>"+"未借書";
+          target2.innerHTML  += "<tr><td>"+result.result[i].CardNo+"</td><td>"+"未借書"+"</td><td>"+"未借書"+"</td><td>"+"未借書"+"</td><td>"+"未借書";
         }else{
-          target2.innerHTML  += "<tr><td>"+result.result[i].CardNo+"</td><td>"+result.result[i].branchname+"</td><td>"+result.result[i].dateout.substr(0,10)+"</td><td>"+result.result[i].dueDate.substr(0,10);
+          target2.innerHTML  += "<tr><td>"+result.result[i].CardNo+"</td><td>"+result.result[i].title+"</td><td>"+result.result[i].branchname+"</td><td>"+result.result[i].dateout.substr(0,10)+"</td><td>"+result.result[i].dueDate.substr(0,10);
         }
         rowCount2++;
         search_flag=1;
@@ -350,7 +350,8 @@ th {
     <!--Borrower-->
     <table id="demo1" style="display:none;margin-top: 40px"> 
       <tr> 
-        <th>BookID</th>
+        <th>CardID</th>
+        <th>Title</th>
         <th>BranchID</th>
         <th>DateOut</th>
         <th>DueDate</th>
@@ -587,7 +588,7 @@ function CheckoutAndReturn(){
             <option>Check out</option>
             <option>Return</option>
           </select>
-          <select class="form-control" id="BranchID" name="Branch" style="width:600px;">
+          <select class="w3-input w3-border" id="BranchID" name="Branch" style="width:600px;">
             <option>BranchID</option>
             <option>TPEL01 台北巿立圖書館總館</option>
             <option>TPEL02 台北巿立圖書館中正分館</option>
@@ -596,8 +597,8 @@ function CheckoutAndReturn(){
             <option>TPEL05 台北巿立圖書館文山分館</option>
             <option>TPEL06 台北巿立圖書館內湖分館</option>
           </select>
-          <input type="text" class="w3-input w3-border" id='CheckAndReturnBookid' placeholder="Search" name="bookName" style="width: 600px">
-          <input type="text" class="w3-input w3-border" id='CheckAndReturnCardid' placeholder="Search" name="bookName" style="width: 600px">
+          <input type="text" class="w3-input w3-border" id='CheckAndReturnBookid' placeholder="Book ID" name="bookName" style="width: 600px">
+          <input type="text" class="w3-input w3-border" id='CheckAndReturnCardid' placeholder="Card ID" name="bookName" style="width: 600px;">
         </div><br>
         <button type="submit" class="w3-button w3-brown w3-padding-large w3-hover-brown" onclick="CheckoutAndReturn()" style="margin-bottom:30%">Submit</button><br><br>
       </div>
