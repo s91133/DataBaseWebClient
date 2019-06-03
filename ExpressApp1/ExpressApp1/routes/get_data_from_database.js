@@ -152,7 +152,8 @@ Sql_operator.prototype.getlibr = function (name) {
     return new Promise(function (resolve, reject) {
         self.connect().then(function (connection) {//
             let sql = "SELECT book.title, book_copies.No_Of_Copies, book_loans.dateout, book_loans.dueDate FROM  book_copies \
-            LEFT OUTER JOIN book_loans ON book_loans.BookId=book_copies.BookId INNER JOIN book ON book_copies.BookId=book.BookId  \
+            LEFT OUTER JOIN book_loans ON book_loans.branchid=book_copies.branchid AND book_loans.bookid= book_copies.bookid \
+            INNER JOIN book ON book_copies.BookId=book.BookId  \
              INNER JOIN library_branch ON library_branch.branchid = book_copies.branchid  WHERE library_branch.branchname  LIKE    \"%" + name + "%\"  ";
             connection.query(sql, function (err, result) {
                 if (err) {
